@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "DinoGameStudy.sln"
+    "dotnet.defaultSolution": "Dino2DGame.sln"
 }

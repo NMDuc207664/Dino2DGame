@@ -17,8 +17,10 @@ public class GameManager : MonoBehaviour
 
     private Player player;
     private Spawner spawner;
-
+    private AudioManager audioManager;
     private float score;
+    //private bool hiscoreUp;
+
     
     private void Awake(){
         if(Instance == null){
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
     private void Start(){
         player = FindObjectOfType<Player>();
         spawner = FindObjectOfType<Spawner>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         NewGame();
     }
 
@@ -49,6 +52,8 @@ public class GameManager : MonoBehaviour
         gameSpeed = initialGameSpeed;
         enabled = true;
         score = 0f;
+        audioManager.StopMusic();
+        audioManager.PlayBG(audioManager.background);
         player.gameObject.SetActive(true);
         spawner.gameObject.SetActive(true);
         gameOverText.gameObject.SetActive(false);
@@ -57,6 +62,8 @@ public class GameManager : MonoBehaviour
     public void GameOver(){
         gameSpeed = 0;
         enabled = false;
+        audioManager.StopMusic();
+        audioManager.PlayBG(audioManager.gameOverSound);
         player.gameObject.SetActive(false);
         spawner.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(true);
@@ -65,13 +72,22 @@ public class GameManager : MonoBehaviour
     }
     private void Update(){
         gameSpeed += gameSpeedIncrease * Time.deltaTime;
-        //Debug.Log(gameSpeed);
+        //Debug.Log(hiscoreUp);
         score += gameSpeed * Time.deltaTime;
         scoreText.text = Mathf.FloorToInt(score).ToString("D5");
     }
 
+    // private void HighScoreSound(){
+    //     if(score >= float.Parse(highScoreText.text)){
+    //         audioManager.PlayBG(audioManager.background);
+    //         //audioManager.PlaySFX(audioManager.hiscoreSfx);
+    //         hiscoreUp = false;
+    //     }
+
+    // }
     private void UpdateHiScore(){
         float hiscore = PlayerPrefs.GetFloat("hiscore", 0);
+        //hiscore = 5;
         if(score > hiscore){
             hiscore = score;
             PlayerPrefs.SetFloat("hiscore", hiscore);

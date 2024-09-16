@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public float initialGameSpeed = 5f;
     public float gameSpeedIncrease = 0.1f;
     public float gameSpeed { get; private set; }
+    public bool isGamePaused = false;
 
     public TextMeshProUGUI gameOverText;
     public Button retryButton;
@@ -77,8 +78,35 @@ public class GameManager : MonoBehaviour
         retryButton.gameObject.SetActive(true);
         UpdateHiScore();
     }
+
+    public void GamePause()
+    {
+        Time.timeScale = 0f;
+        // if (isGamePaused == true)
+        // {
+        //     Time.timeScale = 0f; // pause the game
+        // }
+        // else
+        // {
+        //     Time.timeScale = 1f; // unpause the game
+        // }
+    }
+    public void UnPause()
+    {
+        Time.timeScale = 1f;
+        // if (isGamePaused == true)
+        // {
+        //     Time.timeScale = 0f; // pause the game
+        // }
+        // else
+        // {
+        //     Time.timeScale = 1f; // unpause the game
+        // }
+    }
     private void Update()
     {
+        //Debug.Log(isGamePaused);
+        //GamePause();
         gameSpeed += gameSpeedIncrease * Time.deltaTime;
         //Debug.Log(hiscoreUp);
         score += gameSpeed * Time.deltaTime;

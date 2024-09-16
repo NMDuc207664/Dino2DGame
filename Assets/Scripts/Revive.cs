@@ -14,7 +14,7 @@ public class Revive : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -32,6 +32,6 @@ public class Revive : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(life);
+        //Debug.Log(life);
     }
 }

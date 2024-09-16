@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance;
     [Header("---- Audio Source ----")]
     [SerializeField]
     private AudioSource audioSource;
@@ -16,15 +17,49 @@ public class AudioManager : MonoBehaviour
     public AudioClip gameOverSound;
     public AudioClip collectHeartSfx;
     public AudioClip hiscoreSfx;
-    public void PlaySFX(AudioClip clip){
+
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            DestroyImmediate(gameObject);
+        }
+    }
+    public void PlaySFX(AudioClip clip)
+    {
         sfxSource.PlayOneShot(clip);
     }
-    public void PlayBG(AudioClip clip){
+    public void PlayBG(AudioClip clip)
+    {
         audioSource.clip = clip;
         audioSource.loop = true;
         audioSource.Play();
     }
-    public void StopMusic(){
+    public void StopMusic()
+    {
         audioSource.Stop();
+    }
+
+    public void ToggleMusic()
+    {
+        audioSource.mute = !audioSource.mute;
+    }
+    public void ToggleSFX()
+    {
+        sfxSource.mute = !sfxSource.mute;
+    }
+    public void AudioVolumn(float volumn)
+    {
+        audioSource.volume = volumn;
+    }
+    public void SFXVolumn(float volume)
+    {
+        sfxSource.volume = volume;
     }
 }

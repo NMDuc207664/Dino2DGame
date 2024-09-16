@@ -8,42 +8,50 @@ public class Player : MonoBehaviour
     private Vector3 direction;
     public float gravity = 9.81f;
     public float jumpForce = 8f;
-    private AudioManager audioManager;
-    private Revive revive;
+    //private Revive revive;
 
-    void Awake(){
+    void Awake()
+    {
         character = GetComponent<CharacterController>();
-        revive = GetComponent<Revive>();
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        //revive = GetComponent<Revive>();
     }
-    private void OnEnable(){//built-in func sẽ được gọi mỗi khi reset script này.
+    private void OnEnable()
+    {//built-in func sẽ được gọi mỗi khi reset script này.
         direction = Vector3.zero;
     }
-    private void Update(){
+    private void Update()
+    {
         direction += Vector3.down * gravity * Time.deltaTime;
 
-        if(character.isGrounded){
+        if (character.isGrounded)
+        {
             direction = Vector3.down;
 
-            if(Input.GetButton("Jump")){
+            if (Input.GetButton("Jump"))
+            {
                 direction = Vector3.up * jumpForce;
-                audioManager.PlaySFX(audioManager.jumpSfx);
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.jumpSfx);
             }
         }
         character.Move(direction * Time.deltaTime);
     }
 
-    private void OnTriggerEnter(Collider collision){
-        if(collision.CompareTag("Life")){
-            revive.life += 1;
-            audioManager.PlaySFX(audioManager.collectHeartSfx);
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.CompareTag("Life"))
+        {
+            Revive.Instance.life += 1;
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.collectHeartSfx);
         }
-        if(collision.CompareTag("Obstacle")){
-            if(revive.life>0){
-                revive.life -=1;
-                revive.RevivePlayer();
+        if (collision.CompareTag("Obstacle"))
+        {
+            if (Revive.Instance.life > 0)
+            {
+                Revive.Instance.life -= 1;
+                //Revive.Instance.RevivePlayer();
             }
-            else{
+            else
+            {
                 GameManager.Instance.GameOver();
             }
         }
